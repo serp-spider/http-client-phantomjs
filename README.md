@@ -13,7 +13,9 @@ Install
 -------
 
 Install it through [composer](https://getcomposer.org/) with the package 
-[serps/http-client-phantomjs](https://packagist.org/packages/serps/http-client-phantomjs) : ``composer require 'serps/http-client-phantomjs'``
+[serps/http-client-phantomjs](https://packagist.org/packages/serps/http-client-phantomjs) : 
+
+``composer require 'serps/http-client-phantomjs'``
 
 Doc
 ---
