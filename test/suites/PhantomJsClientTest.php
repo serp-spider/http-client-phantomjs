@@ -11,16 +11,14 @@ use Zend\Diactoros\Request;
 use Zend\Diactoros\Response;
 
 /**
- * @covers Serps\HttpClient\CurlClient
- * @covers Serps\HttpClient\CurlClient\Curl
- * @covers Serps\HttpClient\CurlClient\ResponseBuilder
+ * @covers Serps\HttpClient\PhantomJsClient
  */
 class PhantomJsClientTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testGetRequest()
     {
-        $client = new PhantomJsClient(__DIR__ . "/../../vendor/bin/phantomjs");
+        $client = new PhantomJsClient(__DIR__ . '/../../vendor/bin/phantomjs');
 
         $request = new Request('http://httpbin.org/get', 'GET');
         $request = $request->withHeader('User-Agent', 'test-user-agent');
@@ -28,8 +26,6 @@ class PhantomJsClientTest extends \PHPUnit_Framework_TestCase
 
         $response = $client->sendRequest($request);
         $this->assertInstanceOf(ResponseInterface::class, $response);
-
-        var_dump($response->getBody()->__toString());
 
         $responseData = json_decode($response->getBody()->__toString(), true);
         $this->assertEquals(200, $response->getStatusCode());
@@ -40,7 +36,7 @@ class PhantomJsClientTest extends \PHPUnit_Framework_TestCase
 
     public function testRedirectRequest()
     {
-        $client = new PhantomJsClient(__DIR__ . "/../../vendor/bin/phantomjs");
+        $client = new PhantomJsClient(__DIR__ . '/../../vendor/bin/phantomjs');
 
         $request = new Request('http://httpbin.org/redirect-to?url=get', 'GET');
         $request = $request->withHeader('User-Agent', 'test-user-agent');

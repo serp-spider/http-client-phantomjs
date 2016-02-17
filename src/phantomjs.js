@@ -3,8 +3,8 @@
 
 var system = require('system');
 var page = require('webpage').create();
-var finalUrl = null;
-var redirectCount = 0;
+var pageStatusCode = null;
+var pageHeaders = [];
 
 if (system.args.length !== 2) {
     console.error('A json representation of the request is required.');
@@ -13,17 +13,17 @@ if (system.args.length !== 2) {
 
 try {
     var inputData = JSON.parse(system.args[1]);
-}catch(e){
-    console.log("unable to parse json string: ");
+} catch (e) {
+    console.error("unable to parse json string: ");
     phantom.exit(1);
 }
 
-if(!inputData){
+if (!inputData) {
     console.error('Invalid input data. A valid json is required');
     phantom.exit(1);
 }
 
-if(!inputData.url){
+if (!inputData.url) {
     console.error('No url was specified');
     phantom.exit(1);
 }
@@ -32,51 +32,35 @@ var url = inputData.url;
 var method = inputData.method || "GET";
 var headers = inputData.headers || {};
 var data = inputData.data || "";
-var maxRedirect = inputData.maxRedirect || 20;
 
-if(headers['User-Agent']){
+page.viewportsize = inputData.viewportsize || {width: 1680, height: 1050};
+
+if (headers['User-Agent']) {
     page.settings.userAgent = headers['User-Agent'];
 }
 
 
-page.onResourceReceived = function(resource) {
-    finalUrl = resource.url;
-    redirectCount++;
-    if(redirectCount>maxRedirect){
-        console.error('Error: too many redirects');
-        phantom.exit(1);
+if (!headers['Accept']) {
+    headers['Accept'] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+}
+
+
+page.onResourceReceived = function (resource) {
+    if (page.url == resource.url) {
+        pageStatusCode = resource.status;
+        pageHeaders = resource.headers;
     }
-    console.log(resource.url);
-
-    console.log(redirectCount);
-
 };
 
-
-page.onResourceError = function(resourceError) {
-    console.error('Error: ' + resourceError);
+page.onResourceError = function (resourceError) {
+    console.error('Error: ' + resourceError.errorString);
     phantom.exit(1);
 };
-page.onError = function(msg, trace) {
+page.onError = function (msg, trace) {
     console.error('Error: ' + msg);
     phantom.exit(1);
 };
 
-
-var httpCall = function(to, settings){
-    page.open(url, settings, function (status) {
-        if (status !== 'success') {
-            console.error('Error: could not reach the url: ' + url);
-            phantom.exit(1);
-        } else {
-            console.log(url);
-            console.log(finalUrl);
-            console.log(page.content);
-            phantom.exit();
-        }
-
-    });
-};
 
 var settings = {
     operation: method,
@@ -84,6 +68,27 @@ var settings = {
     data: data
 };
 
-httpCall(url, settings);
+page.open(url, settings, function (status) {
+    if (status !== 'success') {
+        console.error('Error: could not reach the url: ' + url);
+        phantom.exit(1);
+    } else {
+
+        var headers = {};
+        for (var i=0; i<pageHeaders.length; i++) {
+            headers[pageHeaders[i].name] = pageHeaders[i].value;
+        }
+
+        var data = {
+            url: page.url,
+            content: headers['content-type'] == 'text/html' ? page.content : page.plainText,
+            status: pageStatusCode,
+            headers: headers
+        };
+        console.log(JSON.stringify(data));
+        phantom.exit();
+    }
+
+});
 
 
