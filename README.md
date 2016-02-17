@@ -1,10 +1,10 @@
 SERPS - PhantomJS Client
 ========================
 
-[![Build Status](https://travis-ci.org/serp-scrape/http-client-curl.svg?branch=master)](https://travis-ci.org/serp-scrape/http-client-phantomjs)
-[![Test Coverage](https://codeclimate.com/github/serp-scrape/http-client-curl/badges/coverage.svg)](https://codeclimate.com/github/serp-scrape/http-client-phantomjs)
-[![Latest Stable Version](https://poser.pugx.org/serps/http-client-curl/version)](https://packagist.org/packages/serps/http-client-phantomjs)
-[![License](https://poser.pugx.org/serps/http-client-curl/license)](https://packagist.org/packages/serps/http-client-phantomjs)
+[![Build Status](https://travis-ci.org/serp-scrape/http-client-phantomjs.svg?branch=master)](https://travis-ci.org/serp-scrape/http-client-phantomjs)
+[![Test Coverage](https://codeclimate.com/github/serp-scrape/http-client-phantomjs/badges/coverage.svg)](https://codeclimate.com/github/serp-scrape/http-client-phantomjs)
+[![Latest Stable Version](https://poser.pugx.org/serps/http-client-phantomjs/version)](https://packagist.org/packages/serps/http-client-phantomjs)
+[![License](https://poser.pugx.org/serps/http-client-phantomjs/license)](https://packagist.org/packages/serps/http-client-phantomjs)
 
 
 This is a PhantomJS Client implementation for [SERPS](https://github.com/serp-scrape/serps)
