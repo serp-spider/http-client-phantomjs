@@ -52,10 +52,6 @@ page.onResourceReceived = function (resource) {
     }
 };
 
-page.onResourceError = function (resourceError) {
-    console.error('Error: ' + resourceError.errorString);
-    phantom.exit(1);
-};
 page.onError = function (msg, trace) {
     console.error('Error: ' + msg);
     phantom.exit(1);
