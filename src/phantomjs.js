@@ -6,6 +6,14 @@ var page = require('webpage').create();
 var pageStatusCode = null;
 var pageHeaders = [];
 
+// Workaround fixing exit error
+// https://github.com/ariya/phantomjs/issues/12697#issuecomment-61586030
+function exit(){
+    if (page) page.close();
+    setTimeout(function(){ phantom.exit(); }, 0);
+    phantom.onError = function(){};
+}
+
 if (system.args.length !== 2) {
     console.error('A json representation of the request is required.');
     phantom.exit(1);
@@ -82,7 +90,7 @@ page.open(url, settings, function (status) {
             headers: headers
         };
         console.log(JSON.stringify(data));
-        phantom.exit();
+        exit();
     }
 
 });
