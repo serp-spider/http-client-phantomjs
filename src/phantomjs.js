@@ -6,13 +6,9 @@ var page = require('webpage').create();
 var pageStatusCode = null;
 var pageHeaders = [];
 
-// Workaround fixing exit error
-// https://github.com/ariya/phantomjs/issues/12697#issuecomment-61586030
-function exit(){
-    if (page) page.close();
-    setTimeout(function(){ phantom.exit(); }, 0);
-    phantom.onError = function(){};
-}
+var lastResourceError = null;
+
+
 
 if (system.args.length !== 2) {
     console.error('A json representation of the request is required.');
@@ -72,9 +68,13 @@ var settings = {
     data: data
 };
 
+page.onResourceError = function(resourceError) {
+    lastResourceError = resourceError.errorString;
+};
+
 page.open(url, settings, function (status) {
     if (status !== 'success') {
-        console.error('Error: could not reach the url: ' + url);
+        console.error('Error: could not reach the url: "' + url + '". Reason: ' + lastResourceError);
         phantom.exit(1);
     } else {
 
@@ -90,7 +90,12 @@ page.open(url, settings, function (status) {
             headers: headers
         };
         console.log(JSON.stringify(data));
-        exit();
+
+        // Workaround fixing exit error
+        // https://github.com/ariya/phantomjs/issues/12697#issuecomment-61586030
+        if (page) page.close();
+        setTimeout(function(){ phantom.exit(); }, 0);
+        phantom.onError = function(){};
     }
 
 });
