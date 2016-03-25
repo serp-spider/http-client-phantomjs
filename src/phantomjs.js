@@ -50,7 +50,7 @@ var data = inputData.data || "";
 //
 //
 
-page.onResourceError = function(resourceError) {
+page.onResourceError = function (resourceError) {
     lastResourceError = resourceError.errorString;
 };
 
@@ -110,9 +110,11 @@ page.open(url, settings, function (status) {
 
         // Workaround fixing exit error
         // https://github.com/ariya/phantomjs/issues/12697#issuecomment-61586030
-        if (page) page.close();
-        setTimeout(function(){ phantom.exit(); }, 0);
-        phantom.onError = function(){};
+        if (page) {
+            page.close(); }
+        setTimeout(function () {
+            phantom.exit(); }, 0);
+        phantom.onError = function (){};
     }
 
 });
