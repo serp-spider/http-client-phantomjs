@@ -6,20 +6,18 @@
 namespace Serps\HttpClient;
 
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Serps\Core\Cookie\CookieJarInterface;
 use Serps\Core\Http\HttpClientInterface;
 use Serps\Core\Http\ProxyInterface;
+use Serps\Core\Http\SearchEngineResponse;
+use Serps\Core\UrlArchive;
 use Serps\Exception;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Zend\Diactoros\Response;
 
 class PhantomJsClient implements HttpClientInterface
 {
 
-    /**
-     * @var BaseClient
-     */
     protected $phantomJS;
 
     public function __construct($phantomJsBinary = 'phantomjs')
@@ -27,8 +25,12 @@ class PhantomJsClient implements HttpClientInterface
         $this->phantomJS = $phantomJsBinary;
     }
 
-    public function sendRequest(RequestInterface $request, ProxyInterface $proxy = null)
-    {
+    public function sendRequest(
+        RequestInterface $request,
+        ProxyInterface $proxy = null,
+        CookieJarInterface $cookieJar = null
+    ) {
+    
         $commandOptions = [];
         if ($proxy) {
             $proxyHost = $proxy->getIp() . ':' . $proxy->getPort();
@@ -43,10 +45,11 @@ class PhantomJsClient implements HttpClientInterface
             }
         }
 
+        $initialUrl = (string)$request->getUri();
 
         $commandArg = [
             'method' => $request->getMethod(),
-            'url'    => (string)$request->getUri(),
+            'url'    => $initialUrl,
             'headers'=> []
         ];
 
@@ -74,24 +77,15 @@ class PhantomJsClient implements HttpClientInterface
             throw new Exception('Unable to parse Phantomjs response: ' . json_last_error_msg());
         }
 
-        $headers = [
-            'X-SERPS-PROXY' => $proxy ? (string)$proxy : '',
-            'X-SERPS-EFFECTIVE-URL' => $dataResponse['url'],
-            'X-SERPS-JAVASCRIPT-ENABLED' => 1
-        ];
-
-        $response = new Response(
-            'php://memory',
+        $response = new SearchEngineResponse(
+            $dataResponse['headers'],
             $dataResponse['status'],
-            $dataResponse['headers'] + $headers
+            $dataResponse['content'],
+            true,
+            UrlArchive::fromString($initialUrl),
+            UrlArchive::fromString($dataResponse['url']),
+            $proxy
         );
-
-        $body = $response->getBody();
-        if ($body->isSeekable()) {
-            $body->rewind();
-        }
-        $body->write($dataResponse['content']);
-
 
         return $response;
 
