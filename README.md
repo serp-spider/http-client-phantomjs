@@ -17,7 +17,8 @@ Install it through [composer](https://getcomposer.org/) with the package
 
 ``composer require 'serps/http-client-phantomjs'``
 
-Doc
----
 
-Todo
+Documentation
+-------------
+
+[Browse the documentation](http://serp-spider.github.io/documentation/http-client/curl/)
