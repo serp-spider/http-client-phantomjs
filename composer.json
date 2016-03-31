@@ -31,7 +31,7 @@
 
   "require": {
     "php": ">=5.5.9",
-    "serps/serps": "dev-master",
+    "serps/core": "dev-master",
     "symfony/process": "~3.0.2|~2.8"
   },
 
@@ -39,7 +39,8 @@
     "phpunit/phpunit": "4.1.2",
     "squizlabs/php_codesniffer": "~2.5",
     "jakoch/phantomjs-installer": "~2.1.1",
-    "zendframework/zend-diactoros": ">=1"
+    "zendframework/zend-diactoros": ">=1",
+    "serps/http-client-test-suite": "*"
   },
 
   "scripts": {

@@ -4,8 +4,10 @@
  */
 namespace Serps\HttpClient;
 
+use Serps\Core\Http\HttpClientInterface;
 use Serps\Core\Http\SearchEngineResponse;
 use Serps\HttpClient\PhantomJsClient;
+use Serps\Test\HttpClient\HttpClientTestsCase;
 use Zend\Diactoros\Request;
 
 use Zend\Diactoros\Response;
@@ -13,44 +15,20 @@ use Zend\Diactoros\Response;
 /**
  * @covers Serps\HttpClient\PhantomJsClient
  */
-class PhantomJsClientTest extends \PHPUnit_Framework_TestCase
+class PhantomJsClientTest extends HttpClientTestsCase
 {
-
-    public function mockRequest()
+    public function getHttpClient()
     {
-
+        return new PhantomJsClient(__DIR__ . '/../../vendor/bin/phantomjs');
     }
 
-    public function testGetRequest()
+    public function testCookies()
     {
-        $client = new PhantomJsClient(__DIR__ . '/../../vendor/bin/phantomjs');
-
-        $request = new Request('http://httpbin.org/get', 'GET');
-        $request = $request->withHeader('User-Agent', 'test-user-agent');
-        $request = $request->withHeader('Accept', 'application/json');
-
-        $response = $client->sendRequest($request);
-        $this->assertInstanceOf(SearchEngineResponse::class, $response);
-
-        $responseData = json_decode($response->getPageContent(), true);
-        $this->assertEquals(200, $response->getHttpResponseStatus());
-        $this->assertEquals('test-user-agent', $responseData['headers']['User-Agent']);
-        $this->assertEquals('http://httpbin.org/get', $response->getEffectiveUrl());
+        $this->markTestSkipped('Cookies not supported');
     }
 
-    public function testRedirectRequest()
+    public function testSetCookies()
     {
-        $client = new PhantomJsClient(__DIR__ . '/../../vendor/bin/phantomjs');
-
-        $request = new Request('http://httpbin.org/redirect-to?url=get', 'GET');
-        $request = $request->withHeader('User-Agent', 'test-user-agent');
-
-        $response = $client->sendRequest($request);
-        $this->assertInstanceOf(SearchEngineResponse::class, $response);
-
-        $responseData = json_decode($response->getPageContent(), true);
-        $this->assertEquals(200, $response->getHttpResponseStatus());
-        $this->assertEquals('test-user-agent', $responseData['headers']['User-Agent']);
-        $this->assertEquals('http://httpbin.org/get', $response->getEffectiveUrl());
+        $this->markTestSkipped('Cookies not supported');
     }
 }
