@@ -4,7 +4,7 @@
   "description": "PhantomJS client for SERPS",
   "type": "library",
   "keywords": ["SERPS", "HTTP Client", "PhantomJS"],
-  "homepage": "https://github.com/gsouf/serp-spider/serps-http-client-phantomjs",
+  "homepage": "https://github.com/gsouf/serp-spider/http-client-phantomjs",
   "license": "Fair",
 
   "minimum-stability": "dev",
