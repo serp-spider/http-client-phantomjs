@@ -2,7 +2,7 @@
 /**
  * @license see LICENSE
  */
-namespace Serps\HttpClient;
+namespace Serps\Test\HttpClient;
 
 use Serps\Core\Http\HttpClientInterface;
 use Serps\Core\Http\SearchEngineResponse;

@@ -25,7 +25,7 @@
 
   "autoload-dev":{
     "psr-0" : {
-      "Serps\\HttpClient\\CurlClient\\Test\\": "test/suites"
+      "Serps\\Test\\HttpClient\\": "test/suites"
     }
   },
 
