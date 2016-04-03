@@ -97,12 +97,12 @@ page.open(url, settings, function (status) {
 
         var headers = {};
         for (var i=0; i<pageHeaders.length; i++) {
-            headers[pageHeaders[i].name] = pageHeaders[i].value;
+            headers[pageHeaders[i].name.toLocaleLowerCase()] = pageHeaders[i].value;
         }
 
         var data = {
             url: page.url,
-            content: headers['content-type'] == 'text/html' ? page.content : page.plainText,
+            content: headers['content-type'] == 'application/json' ? page.plainText: page.content,
             status: pageStatusCode,
             headers: headers
         };

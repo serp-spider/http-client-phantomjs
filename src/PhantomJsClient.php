@@ -57,6 +57,10 @@ class PhantomJsClient implements HttpClientInterface
             $commandArg['headers'][$headerName] = implode(',', $headerValues);
         }
 
+        if (isset($commandArg['headers']['Host'])) {
+            unset($commandArg['headers']['Host']);
+        }
+
         $data = (string)$request->getBody();
         if ($data) {
             $commandArg['data'] = $data;
