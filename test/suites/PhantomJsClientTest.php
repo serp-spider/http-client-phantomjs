@@ -34,11 +34,11 @@ class PhantomJsClientTest extends HttpClientTestsCase
     }
 
 
-    public function testProcessFails(){
+    public function testProcessFails()
+    {
         $client = new PhantomJsClient('exit 1 &&');
         $request = new Request('http://httpbin.org/get', 'GET');
         $this->setExpectedException(ProcessFailedException::class);
         $client->sendRequest($request);
     }
-
 }
