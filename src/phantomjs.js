@@ -37,8 +37,15 @@ if (!inputData.url) {
 
 var url = inputData.url;
 var method = inputData.method || "GET";
-var headers = inputData.headers || {};
+var headers = {};
 var data = inputData.data || "";
+
+if (inputData.headers && typeof inputData.headers == "object") {
+    for (var i in inputData.headers) {
+        headers[i.toLocaleLowerCase()] = inputData.headers[i];
+    }
+}
+
 //
 //
 // PARSE THE INPUT /////////////////////
@@ -68,14 +75,21 @@ page.onError = function (msg, trace) {
 
 page.viewportsize = inputData.viewportsize || {width: 1680, height: 1050};
 
-if (headers['User-Agent']) {
-    page.settings.userAgent = headers['User-Agent'];
+if (headers['user-agent']) {
+    page.settings.userAgent = headers['user-agent'];
 }
 
 
-if (!headers['Accept']) {
-    headers['Accept'] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+if (!headers['accept']) {
+    headers['accept'] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
 }
+
+// Phantomjs has issues with 'Host' header
+// see: https://github.com/ariya/phantomjs/issues/14164
+if (headers['host']) {
+    delete headers['host'];
+}
+
 //
 //
 // CONFIGURE THE PAGE //////////////////
@@ -94,10 +108,18 @@ page.open(url, settings, function (status) {
         console.error('Error: could not fetch the page for the url: "' + url + '". Reason: ' + lastResourceError);
         phantom.exit(1);
     } else {
-
         var headers = {};
         for (var i=0; i<pageHeaders.length; i++) {
             headers[pageHeaders[i].name.toLocaleLowerCase()] = pageHeaders[i].value;
+        }
+
+        var content;
+        if (headers['content-type'] == 'application/json') {
+            content = page.plainText;
+        } else {
+            content = page.evaluate(function () {
+                return document.documentElement.outerHTML;
+            });
         }
 
         var data = {
@@ -118,5 +140,3 @@ page.open(url, settings, function (status) {
     }
 
 });
-
-

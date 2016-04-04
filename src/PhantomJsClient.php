@@ -30,7 +30,7 @@ class PhantomJsClient implements HttpClientInterface
         ProxyInterface $proxy = null,
         CookieJarInterface $cookieJar = null
     ) {
-    
+
         $commandOptions = [];
         if ($proxy) {
             $proxyHost = $proxy->getIp() . ':' . $proxy->getPort();
@@ -55,10 +55,6 @@ class PhantomJsClient implements HttpClientInterface
 
         foreach ($request->getHeaders() as $headerName => $headerValues) {
             $commandArg['headers'][$headerName] = implode(',', $headerValues);
-        }
-
-        if (isset($commandArg['headers']['Host'])) {
-            unset($commandArg['headers']['Host']);
         }
 
         $data = (string)$request->getBody();
