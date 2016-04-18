@@ -32,7 +32,7 @@
   "require": {
     "php": ">=5.5.9",
     "serps/core": "dev-master",
-    "symfony/process": "~3.0.2|~2.8"
+    "symfony/process": "~3.0.2|~2.1"
   },
 
   "require-dev":{
