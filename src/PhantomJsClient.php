@@ -43,6 +43,12 @@ class PhantomJsClient implements HttpClientInterface
                 }
                 $commandOptions[]= '--proxy-auth=' . $proxyAuth;
             }
+
+            if ($proxy->getType() == "SOCKS5") {
+                $commandOptions[]= '--proxy-type=socks5';
+            }elseif ($proxy->getType() == "SOCKS4") {
+                $commandOptions[]= '--proxy-type=socks4';
+            }
         }
 
         $initialUrl = (string)$request->getUri();
