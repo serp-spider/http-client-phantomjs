@@ -57,7 +57,7 @@ class PhantomJsClient implements HttpClientInterface
             if ($user = $proxy->getUser()) {
                 $proxyAuth = $user;
                 if ($password = $proxy->getPassword()) {
-                    $proxyAuth .= ':' . $proxyAuth;
+                    $proxyAuth .= ':' . $password;
                 }
                 $commandOptions[]= '--proxy-auth=' . $proxyAuth;
             }
