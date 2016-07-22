@@ -19,10 +19,28 @@ class PhantomJsClient implements HttpClientInterface
 {
 
     protected $phantomJS;
+    protected $phantomJsOptions = [];
 
     public function __construct($phantomJsBinary = 'phantomjs')
     {
         $this->phantomJS = $phantomJsBinary;
+    }
+
+    /**
+     * Set options for phantomjs command line
+     *
+     * example: ``$client->setPhantomJsOption('--ignore-ssl-errors=true');``
+     *
+     * @param string $option option to pass to the phantomjs command line
+     */
+    public function setPhantomJsOption($option)
+    {
+        $this->phantomJsOptions[] = $option;
+    }
+
+    public function getPhantomJsOptions()
+    {
+        return $this->phantomJsOptions;
     }
 
     public function sendRequest(
@@ -31,7 +49,7 @@ class PhantomJsClient implements HttpClientInterface
         CookieJarInterface $cookieJar = null
     ) {
 
-        $commandOptions = [];
+        $commandOptions = $this->phantomJsOptions;
         if ($proxy) {
             $proxyHost = $proxy->getIp() . ':' . $proxy->getPort();
             $commandOptions[]= '--proxy=' . $proxyHost;
@@ -44,9 +62,9 @@ class PhantomJsClient implements HttpClientInterface
                 $commandOptions[]= '--proxy-auth=' . $proxyAuth;
             }
 
-            if ($proxy->getType() == "SOCKS5") {
+            if ($proxy->getType() == 'SOCKS5') {
                 $commandOptions[]= '--proxy-type=socks5';
-            }elseif ($proxy->getType() == "SOCKS4") {
+            } elseif ($proxy->getType() == 'SOCKS4') {
                 $commandOptions[]= '--proxy-type=socks4';
             }
         }
@@ -94,6 +112,5 @@ class PhantomJsClient implements HttpClientInterface
         );
 
         return $response;
-
     }
 }
