@@ -51,7 +51,7 @@ class PhantomJsClient implements HttpClientInterface
 
         $commandOptions = $this->phantomJsOptions;
         if ($proxy) {
-            $proxyHost = $proxy->getIp() . ':' . $proxy->getPort();
+            $proxyHost = $proxy->getHost() . ':' . $proxy->getPort();
             $commandOptions[]= '--proxy=' . $proxyHost;
 
             if ($user = $proxy->getUser()) {
