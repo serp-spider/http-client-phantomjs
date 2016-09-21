@@ -65,7 +65,7 @@ class PhantomJsClient implements HttpClientInterface
             if ($proxy->getType() == 'SOCKS5') {
                 $commandOptions[]= '--proxy-type=socks5';
             } elseif ($proxy->getType() == 'SOCKS4') {
-                $commandOptions[]= '--proxy-type=socks4';
+                throw new Exception('SOCKS4 proxy are not supported by phantomjs');
             }
         }
 
