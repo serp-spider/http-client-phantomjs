@@ -30,8 +30,8 @@
   },
 
   "require": {
-    "php": ">=5.5.9",
-    "serps/core": "~0.1.0",
+    "php": ">=5.5",
+    "serps/core": "~0.2.0",
     "symfony/process": "~3.0.2|~2.1"
   },
 
@@ -57,5 +57,11 @@
 
   "suggest": {
     "jakoch/phantomjs-installer": "Install phantom js alongside your project"
+  },
+
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.2.*-dev"
+    }
   }
 }
