@@ -57,6 +57,17 @@ if (inputData.headers && typeof inputData.headers == "object") {
 //
 //
 
+// Additional HTTP request headers.
+// @see http://phantomjs.org/api/webpage/property/custom-headers.html
+if (inputData.customHeaders && typeof inputData.customHeaders == "object") {
+    page.customHeaders = inputData.customHeaders;
+}
+
+page.onInitialized = function() {
+    // Reset the customHeaders property.
+    page.customHeaders = {};
+};
+
 page.onResourceError = function (resourceError) {
     lastResourceError = resourceError.errorString;
 };
