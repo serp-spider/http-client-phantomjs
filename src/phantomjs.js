@@ -63,7 +63,7 @@ if (inputData.customHeaders && typeof inputData.customHeaders == "object") {
     page.customHeaders = inputData.customHeaders;
 }
 
-page.onInitialized = function() {
+page.onInitialized = function () {
     // Reset the customHeaders property.
     page.customHeaders = {};
 };

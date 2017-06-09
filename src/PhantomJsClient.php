@@ -20,7 +20,7 @@ class PhantomJsClient implements HttpClientInterface
 
     protected $phantomJS;
     protected $phantomJsOptions = [];
-	protected $phantomJsHeaders = [];
+    protected $phantomJsHeaders = [];
 
     public function __construct($phantomJsBinary = 'phantomjs')
     {
@@ -44,32 +44,32 @@ class PhantomJsClient implements HttpClientInterface
         return $this->phantomJsOptions;
     }
 
-	/**
-	 * Set a custom HTTP request header for PhantomJS.
-	 *
-	 * example: ``$client->setPhantomJsHeader('Referer', 'referer_url');``
-	 *
-	 * @param string $key
-	 *    Header name.
-	 * @param string $value
-	 *    Header value.
-	 */
-	public function setPhantomJsHeader($key, $value)
-	{
-		$this->phantomJsHeaders[$key] = $value;
-	}
+    /**
+     * Set a custom HTTP request header for PhantomJS.
+     *
+     * example: ``$client->setPhantomJsHeader('Referer', 'referer_url');``
+     *
+     * @param string $key
+     *    Header name.
+     * @param string $value
+     *    Header value.
+     */
+    public function setPhantomJsHeader($key, $value)
+    {
+        $this->phantomJsHeaders[$key] = $value;
+    }
 
-	/**
-	 * Get custom HTTP request headers for PhantomJS.
-	 *
-	 * @return array
-	 *    Returns an associative array of the message's headers. Each key is
-	 *    a header name, and each value is a header value.
-	 */
-	public function getPhantomJsHeaders()
-	{
-		return $this->phantomJsHeaders;
-	}
+    /**
+     * Get custom HTTP request headers for PhantomJS.
+     *
+     * @return array
+     *    Returns an associative array of the message's headers. Each key is
+     *    a header name, and each value is a header value.
+     */
+    public function getPhantomJsHeaders()
+    {
+        return $this->phantomJsHeaders;
+    }
 
     public function sendRequest(
         RequestInterface $request,
@@ -99,14 +99,14 @@ class PhantomJsClient implements HttpClientInterface
 
         $initialUrl = (string)$request->getUri();
 
-	    $commandArg = [
-		    'method'        => $request->getMethod(),
-		    'url'           => $initialUrl,
-		    'headers'       => [],
-		    // Additional HTTP request headers for PhantomJS.
-		    // @see http://phantomjs.org/api/webpage/property/custom-headers.html
-		    'customHeaders' => $this->phantomJsHeaders,
-	    ];
+        $commandArg = [
+            'method'        => $request->getMethod(),
+            'url'           => $initialUrl,
+            'headers'       => [],
+            // Additional HTTP request headers for PhantomJS.
+            // @see http://phantomjs.org/api/webpage/property/custom-headers.html
+            'customHeaders' => $this->phantomJsHeaders,
+        ];
 
         foreach ($request->getHeaders() as $headerName => $headerValues) {
             $commandArg['headers'][$headerName] = implode(',', $headerValues);
