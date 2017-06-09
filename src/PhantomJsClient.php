@@ -20,7 +20,7 @@ class PhantomJsClient implements HttpClientInterface
 
     protected $phantomJS;
     protected $phantomJsOptions = [];
-    protected $phantomJsHeaders = [];
+    protected $customHeaders = [];
 
     public function __construct($phantomJsBinary = 'phantomjs')
     {
@@ -54,9 +54,9 @@ class PhantomJsClient implements HttpClientInterface
      * @param string $value
      *    Header value.
      */
-    public function setPhantomJsHeader($key, $value)
+    public function setCustomHeader($key, $value)
     {
-        $this->phantomJsHeaders[$key] = $value;
+        $this->customHeaders[$key] = $value;
     }
 
     /**
@@ -66,9 +66,9 @@ class PhantomJsClient implements HttpClientInterface
      *    Returns an associative array of the message's headers. Each key is
      *    a header name, and each value is a header value.
      */
-    public function getPhantomJsHeaders()
+    public function getCustomHeaders()
     {
-        return $this->phantomJsHeaders;
+        return $this->customHeaders;
     }
 
     public function sendRequest(
@@ -105,7 +105,7 @@ class PhantomJsClient implements HttpClientInterface
             'headers'       => [],
             // Additional HTTP request headers for PhantomJS.
             // @see http://phantomjs.org/api/webpage/property/custom-headers.html
-            'customHeaders' => $this->phantomJsHeaders,
+            'customHeaders' => $this->customHeaders,
         ];
 
         foreach ($request->getHeaders() as $headerName => $headerValues) {

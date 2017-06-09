@@ -46,4 +46,29 @@ class PhantomJsClientTest extends HttpClientTestsCase
     {
         $this->markTestSkipped('Phantomjs does not support socks4 proxies');
     }
+
+
+    public function testPhantomjsCustomHeaders()
+    {
+        $client = $this->getHttpClient();
+        $client->setCustomHeader('foo', 'bar');
+
+        // Get
+        $request = new Request('http://httpbin.org/get', 'GET');
+        $response = $client->sendRequest($request);
+        $responseData = json_decode($response->getPageContent(), true);
+        $this->assertEquals('bar', $responseData['headers']['Foo']);
+
+        // Post
+        $request = new Request('http://httpbin.org/post', 'POST');
+        $response = $client->sendRequest($request);
+        $responseData = json_decode($response->getPageContent(), true);
+        $this->assertEquals('bar', $responseData['headers']['Foo']);
+
+        // Redirect
+        $request = new Request('http://httpbin.org/redirect-to?url=get', 'GET');
+        $response = $client->sendRequest($request);
+        $responseData = json_decode($response->getPageContent(), true);
+        $this->assertEquals('bar', $responseData['headers']['Foo']);
+    }
 }
