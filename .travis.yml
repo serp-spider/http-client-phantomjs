@@ -16,6 +16,7 @@ matrix:
 
   allow_failures:
   - php: nightly
+  - php: hhvm
 
 before_script:
   - if [ -z "$IGNORE_XDEBUG" ];then phpenv config-rm xdebug.ini; fi
