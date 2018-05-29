@@ -31,7 +31,7 @@
 
   "require": {
     "php": ">=5.5",
-    "serps/core": "~0.2.0",
+    "serps/core": "~0.2.0|~0.3.0",
     "symfony/process": "^4|^3.0.2|^2.1"
   },
 
